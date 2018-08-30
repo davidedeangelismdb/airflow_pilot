@@ -1,8 +1,7 @@
 FROM airflow-local
 
-#RUN sed -i 's/load_examples = True/load_examples = False/' ~/airflow/airflow.cfg
-
-COPY dags /home/root/airflow
+RUN mkdir -p /home/root/airflow/dags
+COPY dags/* /home/root/airflow/dags
 
 # initialize the database
 RUN airflow initdb
@@ -11,6 +10,6 @@ RUN airflow initdb
 EXPOSE 80
 
 # Run the service when the container launches
-CMD ["sh", "-c", "airflow webserver -p 80; airflow scheduler -D"]
+CMD ["sh", "-c", "airflow webserver -p 80 -D; airflow scheduler -D"]
 
 

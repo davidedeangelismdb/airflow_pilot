@@ -23,7 +23,7 @@ default_args = {
 }
 
 dag = DAG(
-    'tutorial', default_args=default_args, schedule_interval=timedelta(1))
+    'tutorial_pilot', default_args=default_args, schedule_interval=timedelta(1))
 
 # t1, t2 and t3 are examples of tasks created by instantiating operators
 t1 = BashOperator(
