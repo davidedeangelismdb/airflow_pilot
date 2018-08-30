@@ -12,3 +12,5 @@
 kubectl logs airflow-local-7f8f8b5f5f-8cn7p
 # SH 
 kubectl exec -it airflow-local-7f8f8b5f5f-8cn7p -- /bin/sh
+# DELETE DEPLOYMENT
+kubectl delete deployment airflow-local
