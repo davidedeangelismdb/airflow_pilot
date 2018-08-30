@@ -1,0 +1,16 @@
+FROM airflow-local
+
+#RUN sed -i 's/load_examples = True/load_examples = False/' ~/airflow/airflow.cfg
+
+COPY dags /home/root/airflow
+
+# initialize the database
+RUN airflow initdb
+
+# Make port 80 available to the world outside this container
+EXPOSE 80
+
+# Run the service when the container launches
+CMD ["sh", "-c", "airflow webserver -p 80; airflow scheduler -D"]
+
+
