@@ -1,7 +1,6 @@
 from ssl import CERT_NONE
 
 from airflow.hooks.base_hook import BaseHook
-import pymongo
 from pymongo import MongoClient
 
 
@@ -22,7 +21,7 @@ class MongoHook(BaseHook):
 
         self.mongo_conn_id = conn_id
         self.connection = self.get_connection(conn_id)
-        self.extras = self.connection.extra_dejson
+        #self.extras = self.connection.extra_dejson
 
     def get_conn(self):
         """
@@ -41,7 +40,7 @@ class MongoHook(BaseHook):
         )
 
         # Mongo Connection Options dict that is unpacked when passed to MongoClient
-        options = self.extras
+        options = {'ssl': True}
 
         # If we are using SSL disable requiring certs from specific hostname
         if options.get('ssl', False):

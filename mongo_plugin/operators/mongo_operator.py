@@ -13,7 +13,9 @@ class MongoOperator(BaseOperator):
         Executed by task_instance at runtime
         """
         mongo_conn = MongoHook(self.mongo_conn_id).get_conn()
-        print(mongo_conn)
+        coll_users = mongo_conn.get_database('karakuri').get_collection('users')
+        users = coll_users.find({})
+        print("USERS: ", self.transform(users))
 
     def transform(self, docs):
         """
