@@ -16,8 +16,7 @@ COPY requirements.txt /home/root/airflow
 RUN pip3 install -r /home/root/airflow/requirements.txt
 
 #to review due to dependencies errors
-#RUN pip3 install airflow[kubernetes]
-#RUN pip3 install airflow[crypto]
+RUN pip3 install apache-airflow[crypto]
 
 # initialize the database
 RUN airflow initdb
