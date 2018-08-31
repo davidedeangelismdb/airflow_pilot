@@ -1,4 +1,4 @@
-FROM airflow-local
+FROM airflow-local-prereq
 
 #don't load the airflow examples
 ENV AIRFLOW_CORE_LOAD_EXAMPLES=False

@@ -3,7 +3,7 @@
 # run aiurflow_pilot
 * minikube start
 * eval $(minikube docker-env)
-* docker build -t airflow-local-prepreq -f Dockerfile.prereq .
+* docker build -t airflow-local-prereq -f Dockerfile.prereq .
 * docker build -t airflow-local-app -f Dockerfile.app .
 * kubectl apply -f environments/local.yml
 * kubectl get pods
@@ -18,3 +18,4 @@ kubectl delete deployment airflow-local
 
 #run this command for scheduling the dags
 airflow scheduler
+
