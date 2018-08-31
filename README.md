@@ -18,4 +18,3 @@ kubectl delete deployment airflow-local
 
 #run this command for scheduling the dags
 airflow scheduler
-

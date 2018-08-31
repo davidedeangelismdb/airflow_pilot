@@ -20,8 +20,12 @@ default_args = {
     # 'end_date': datetime(2016, 1, 1),
 }
 
-dag = DAG(
-    'test_pilot', default_args=default_args)
+dag = DAG('test_pilot', default_args=default_args)
 
 
-t1 = MongoOperator(task_id='read_staging', mongo_conn_id="mongo_default", dag=dag)
+t1 = MongoOperator(task_id='read_staging',
+                   mongo_conn_id="mongo_default",
+                   mongo_database = "karakuri",
+                   mongo_colletion = "workflows",
+                   mongo_query = {"name": "AutoClose1"},
+                   dag=dag)
