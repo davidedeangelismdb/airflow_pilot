@@ -3,6 +3,9 @@ FROM airflow-local-prereq
 #don't load the airflow examples
 ENV AIRFLOW_CORE_LOAD_EXAMPLES=False
 
+
+RUN mkdir -p /home/root/airflow/karakurilogs
+
 #copy the dags
 RUN mkdir -p /home/root/airflow/dags
 COPY dags /home/root/airflow/dags/
@@ -14,6 +17,15 @@ COPY mongo_plugin /home/root/airflow/plugins/mongo_plugin
 #copy requirements for the plugin and install them
 COPY requirements.txt /home/root/airflow
 RUN pip3 install -r /home/root/airflow/requirements.txt
+
+RUN mkdir -p /home/root/pyforce
+COPY pyforce /home/root/pyforce
+RUN pip3 install -e /home/root/pyforce
+
+RUN mkdir -p /home/root/support-tools-libs
+COPY support-tools-libs /home/root/support-tools-libs
+RUN pip3 install -e /home/root/support-tools-libs
+
 
 #to review due to dependencies errors
 RUN pip3 install apache-airflow[crypto]

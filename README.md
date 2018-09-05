@@ -15,6 +15,5 @@ kubectl logs airflow-local-app-7f8f8b5f5f-8cn7p
 kubectl exec -it airflow-local-app-7f8f8b5f5f-8cn7p -- /bin/sh
 # DELETE DEPLOYMENT
 kubectl delete deployment airflow-local
-
-#run this command for scheduling the dags
+# run this command for scheduling the dags
 airflow scheduler
