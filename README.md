@@ -1,5 +1,10 @@
 # airflow_pilot
 * clone airflow_pilot
+* cd airflow_pilot
+* clone inside pyforce
+  git clone --branch feature/python3 git@github.com:thiagogalesi/pyforce.git
+* close support-tools-libs
+  git clone --branch staging git@github.com:10gen/support-tools-libs.git
 # run aiurflow_pilot
 * minikube start
 * eval $(minikube docker-env)
