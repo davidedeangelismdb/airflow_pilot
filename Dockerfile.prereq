@@ -1,7 +1,7 @@
 # FIRST IMAGE BUILD TAKES WHILE. COMMENT FROM AIRFLO-LOCAL and UNCOMMENT FROM ALPINE:3.6 FOR THE FIRST RUN
-FROM alpine:3.6
+FROM alpine:3.8
 
-RUN apk add --no-cache python3 python3-dev musl-dev util-linux linux-headers openssl-dev openssl git g++ libxml2-dev libxslt-dev gcc libffi libffi-dev sudo
+RUN apk add --no-cache python3 python3-dev musl-dev util-linux linux-headers openssl-dev openssl git g++ libxml2-dev libxslt-dev gcc libffi libffi-dev sudo py3-psycopg2
 
 RUN pip3 install --upgrade pip
 

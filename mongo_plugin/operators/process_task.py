@@ -7,15 +7,16 @@ from support.sfdc.sfdcpp import Sfdcpp, SfdcppException
 
 logger = logging.getLogger(__name__)
 
-class GetWorkflowDocsOperator(BaseOperator):
+class ProcessTaskOperator(BaseOperator):
 
     def __init__(self,
                  mongo_conn_id,
                  mongo_database = 'test',
                  mongo_colletion = 'colls',
                  mongo_query = {},
+                 task = None,
                  *args, **kwargs):
-        super(GetWorkflowDocsOperator, self).__init__(*args, **kwargs)
+        super(ProcessTaskOperator, self).__init__(*args, **kwargs)
         # Conn Ids
         self.mongo_conn_id = mongo_conn_id
         self.mongo_database = mongo_database
@@ -27,10 +28,33 @@ class GetWorkflowDocsOperator(BaseOperator):
         self.coll_users = self.mongo_conn.get_database('karakuri').get_collection('users')
         self.coll_issues = self.mongo_conn.get_database('support').get_collection('issues')
         self.coll_workflows = self.mongo_conn.get_database('karakuri').get_collection('workflows')
+        #
+        self.task = task
 
     def execute(self, context):
         print("CONTEXT: ", context)
-        workflow = self.pull_workflow(context)
+        print("TASK TO PROCESS: ", self.task)
+        karakuri = self.get_karakuri()
+        result = None
+        if self.task:
+            try:
+                result = karakuri.processTask(self.task.get('_id'), approvedOnly=True, userDoc=self.authentincate())
+            except Exception as e:
+                logger.error("Failed to queue task: %s", str(e))
+
+        print("RESULTS: ", result)
+        #return result
+
+
+    def authentincate(self):
+        try:
+            user = self.coll_users.find_one({'user': 'a_user'})
+            return user
+        except Exception:
+            logger.error("Abort - Failed to read users collection")
+
+
+    def get_karakuri(self):
         args = self.create_args()
         jira = Jirapp(args, self.mongo_conn)
         jira.set_live(args['live'])
@@ -45,22 +69,8 @@ class GetWorkflowDocsOperator(BaseOperator):
 
         print("CREATE KARAKURI")
         karakuri = Karakuri(args, jira, sfdc, issuer, self.mongo_conn)
-        result = karakuri.findWorkflowDocs(workflow, sudoUser='a_user_admin', userDoc=self.authentincate())
-        print("RESULTS: ", result)
-        return result
 
-    def authentincate(self):
-        try:
-            user = self.coll_users.find_one({'user': 'a_user_admin'})
-            return user
-        except Exception:
-            logger.error("Abort - Failed to read users collection")
-
-
-    def pull_workflow(self, context):
-        value = context['task_instance'].xcom_pull(task_ids='get_workflow_by_name')
-        print("pull_workflow: ", value)
-        return value
+        return karakuri
 
     def create_args(self):
         cert = bytes("RSA PRIVATE KEY", "utf-8").decode("unicode_escape")
@@ -87,4 +97,3 @@ class GetWorkflowDocsOperator(BaseOperator):
             converted into an array.
         """
         return [doc for doc in docs]
-
